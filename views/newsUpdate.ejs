@@ -1,0 +1,44 @@
+<!-- newsUpdate.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update News</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <%- include('navbar') %>
+    <h1 class="mt-5">Update News Article</h1>
+    <form action="/admin/news/<%= newsItem._id %>/update" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="<%= newsItem.name %>" required>
+        </div>
+        <div class="form-group">
+            <label for="name_ru">Localized Name (Russian)</label>
+            <input type="text" class="form-control" id="name_ru" name="name_ru" value="<%= newsItem.name_ru %>" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required><%= newsItem.description %></textarea>
+        </div>
+        <div class="form-group">
+            <label for="description_ru">Localized Description (Russian)</label>
+            <textarea class="form-control" id="description_ru" name="description_ru" rows="3" required><%= newsItem.description_ru %></textarea>
+        </div>
+        <div class="form-group">
+            <label for="files">Images</label>
+            <input type="file" class="form-control-file" id="files" name="files" multiple required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update News Item</button>
+    </form>
+</div>
+<%- include('footer') %>
+<!-- Bootstrap JS (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

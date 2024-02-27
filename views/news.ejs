@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add any additional CSS stylesheets or meta tags here -->
+    <style>
+        /* Additional CSS styles */
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <%- include('navbar') %>
+    <div class="mt-3 mb-3">
+        <!-- Language switcher dropdown menu -->
+        <div class="btn-group" id="languageDropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Language
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#" data-lang="en">English</a>
+                <a class="dropdown-item" href="#" data-lang="ru">Russian</a>
+            </div>
+        </div>
+    </div>
+    <h1 class="mt-5">News Articles</h1>
+    <% if (newsItems.length === 0) { %>
+        <p>No news articles available.</p>
+    <% } else { %>
+        <% newsItems.forEach(article => { %>
+            <div class="list-group-item">
+                <!-- Display images if available -->
+                <% if (article.images && article.images.length > 0) { %>
+                    <div id="carouselExampleIndicators" class="carousel slide mb-3" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <% article.images.forEach((_, index) => { %>
+                                <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" class="<%= index === 0 ? 'active' : '' %>"></li>
+                            <% }); %>
+                        </ol>
+                        <div class="carousel-inner">
+                            <% article.images.forEach((image, index) => { %>
+                                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                    <img src="<%= image %>" class="d-block w-100" alt="Image">
+                                </div>
+                            <% }); %>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                <% } %>
+                <h2><%= lang === 'en' ? article.name : article.name_ru %></h2>
+                <p><%= lang === 'en' ? article.description : article.description_ru %></p>
+                <!-- Add any additional information about the article here -->
+                <% if (user && user.role === 'admin') { %>
+                    <!-- Check if user is admin before showing delete and update buttons -->
+                    <div>
+                        <form action="/admin/news/<%= article._id %>/delete" method="POST">
+                            <button type="submit" class="btn btn-danger mr-2">Delete</button>
+                        </form>
+                        <a href="/admin/news/<%= article._id %>/update" class="btn btn-primary">Update</a>
+                    </div>
+                <% } %>
+            </div>
+        <% }); %>
+    <% } %>
+</div>
+<%- include('footer') %>
+<!-- Bootstrap JS (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- Add any additional JavaScript scripts here -->
+<script>
+    // JavaScript code to handle language selection
+    $(document).ready(function() {
+        $('#languageDropdown .dropdown-item').click(function(e) {
+            e.preventDefault();
+            var lang = $(this).data('lang');
+            window.location.href = '?lang=' + lang;
+        });
+    });
+</script>
+</body>
+</html>
