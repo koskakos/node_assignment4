@@ -29,6 +29,10 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
+
 app.get('/login', (req, res) => {
     res.render('login', { error: null }); // Pass null as the error variable
 });
